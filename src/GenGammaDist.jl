@@ -5,7 +5,7 @@ using Distributions
 # We have constructors for three different parameterizations.
 # Some parameters can be negative, so this works as an inverse gamma distribution as well.
 
-export GenGamma, gengamma_wiki, gengamma1
+export GenGamma, gengamma_wiki, gengamma1, params, params1, params_wiki
 
 # Use parameterization of R flexsurv implementation
 immutable GenGamma
@@ -41,6 +41,8 @@ function gengamma1(b,d,p)
     gengamma_wiki(a,d,p)
 end
 
+
+
 # Use the algorithm given on the R page in flexsurv
 function Base.Random.rand(p::GenGamma)
     Qs = p.Q^2
@@ -60,4 +62,24 @@ function Base.mean(p::GenGamma)
     a * gamma(iQs + p.σ/p.Q)/gamma(iQs)
 end
 
+
+function params_wiki(dt::GenGamma)
+    d = 1/(dt.σ * dt.Q)
+    p = (dt.Q)/(dt.σ)
+    println(d," ", p)
+    a = abs(dt.Q)^(2/p)*exp(dt.μ)
+    return (a,d,p)
+end
+
+
+function params1(dt::GenGamma)
+    (a,d,p) = params_wiki(dt)
+    b = a^(-p)
+    return (b,d,p)
+end
+
+
+function params(d::GenGamma)
+    return (d.μ, d.σ, d.Q)
+end
 end # module

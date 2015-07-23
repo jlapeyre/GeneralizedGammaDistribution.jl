@@ -17,7 +17,7 @@ Random sample
 rand(d)
 ```
 
-Compute mean (which may not exist for negative parameters)
+Compute the mean (which does not exist for `-1<d<0`)
 ```julia
 mean(d)
 ```
@@ -28,6 +28,26 @@ except `b=a^(-p)`
 d = gengamma1(b,d,p)
 ```
 
-For `p=-1` and `d<0`, the distribution is the
-[Inverse gamma distribution](https://en.wikipedia.org/wiki/Inverse-gamma_distribution).
+Construct a distribution with alternate parameterization
+```julia
+ GenGamma(μ, σ, Q)
+```
 
+The parameters are related via
+`μ = log(a) + (log(abs(d)) - log(abs(p)))/p`,
+`σ = 1/sqrt(p*d)`, `Q = sqrt(p/d)`, and
+`d= 1/(σ*Q)`,  `p= Q/σ`,
+`a= abs(Q)^(2*Q/σ)*exp(μ)`
+
+
+Retrieve parameters
+
+```julia
+params(d)
+params_wiki(d)
+params1(d)
+```
+
+For `p=-1` and `d<0`, the distribution is the
+[Inverse gamma distribution](https://en.wikipedia.org/wiki/Inverse-gamma_distribution),
+with `α = -d`.
