@@ -66,18 +66,15 @@ end
 function params_wiki(dt::GenGamma)
     d = 1/(dt.σ * dt.Q)
     p = (dt.Q)/(dt.σ)
-    println(d," ", p)
     a = abs(dt.Q)^(2/p)*exp(dt.μ)
     return (a,d,p)
 end
-
 
 function params1(dt::GenGamma)
     (a,d,p) = params_wiki(dt)
     b = a^(-p)
     return (b,d,p)
 end
-
 
 function params(d::GenGamma)
     return (d.μ, d.σ, d.Q)
