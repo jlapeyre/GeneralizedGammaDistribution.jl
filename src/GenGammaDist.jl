@@ -43,7 +43,7 @@ end
 
 
 
-# Use the algorithm given on the R page in flexsurv
+# Use the algorithm given in the documentation pages for the R package flexsurv.
 function Base.Random.rand(p::GenGamma)
     Qs = p.Q^2
 #    gamma_deviate = rand(Distributions.Gamma(1/Qs,1)) # constructing all this is slow ?
