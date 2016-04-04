@@ -1,6 +1,9 @@
 module GenGammaDist
 using Distributions
 
+import Base.Random
+import Base: mean, rand
+
 # Generalized Gamma distribution
 # We have constructors for three different parameterizations.
 # Some parameters can be negative, so this works as an inverse gamma distribution as well.
@@ -9,10 +12,10 @@ export GenGamma, gengamma_wiki, gengamma1, params, params1, params_wiki
 
 # Use parameterization of R flexsurv implementation
 immutable GenGamma
-    μ
-    σ
-    Q
-    gdist  # gamma distribution used to compute random samples
+    μ::Float64
+    σ::Float64
+    Q::Float64
+    gdist::Distributions.Gamma  # gamma distribution used to compute random samples
 end
 
 # construct with parameterization of R flexsurv implementation
@@ -44,7 +47,7 @@ end
 
 
 # Use the algorithm given in the documentation pages for the R package flexsurv.
-function Base.Random.rand(p::GenGamma)
+function rand(p::GenGamma)
     Qs = p.Q^2
 #    gamma_deviate = rand(Distributions.Gamma(1/Qs,1)) # constructing all this is slow ?
     gamma_deviate = rand(p.gdist)  # only saves 10 or so percent time.
@@ -55,7 +58,7 @@ end
 
 #  mean in wikipedia parameterization is
 #  a * gamma((d+1)/p)/gamma(d/p)
-function Base.mean(p::GenGamma)
+function mean(p::GenGamma)
     Qs = p.Q^2
     iQs = 1/Qs
     a = Qs^(p.σ / p.Q) * exp(p.μ)
