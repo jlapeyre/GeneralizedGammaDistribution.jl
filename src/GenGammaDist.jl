@@ -11,7 +11,7 @@ import Base: mean, rand
 export GenGamma, gengamma_wiki, gengamma1, params, params1, params_wiki
 
 # Use parameterization of R flexsurv implementation
-immutable GenGamma
+immutable GenGamma <: ContinuousUnivariateDistribution
     μ::Float64
     σ::Float64
     Q::Float64
@@ -43,8 +43,6 @@ function gengamma1(b,d,p)
     a = b^(-1/p)
     gengamma_wiki(a,d,p)
 end
-
-
 
 # Use the algorithm given in the documentation pages for the R package flexsurv.
 function rand(p::GenGamma)
@@ -82,4 +80,5 @@ end
 function params(d::GenGamma)
     return (d.μ, d.σ, d.Q)
 end
+
 end # module
