@@ -2,7 +2,8 @@ module GenGammaDist
 using Distributions
 
 import Base.Random
-import Base: mean, rand
+import Base: rand
+import StatsBase: mean
 import Distributions: pdf
 
 # Generalized Gamma distribution
@@ -12,7 +13,7 @@ import Distributions: pdf
 export GenGamma, gengamma_wiki, gengamma1, params, params1, params_wiki, pdf
 
 # Use parameterization of R flexsurv implementation
-immutable GenGamma <: ContinuousUnivariateDistribution
+struct GenGamma <: ContinuousUnivariateDistribution
     μ::Float64
     σ::Float64
     Q::Float64
@@ -29,7 +30,7 @@ implementation[^1].
 
 [^1]: Prentice, R. L. (1974). A log gamma model and its maximum likelihood estimation. Biometrika 61(3):539-544
 """
-function GenGamma(μ, σ, Q)
+function GenGamma(μ=1.0, σ=1.0, Q=1.0)
     gdist = Distributions.Gamma(1/Q^2,1)
     GenGamma(μ, σ, Q, gdist)
 end

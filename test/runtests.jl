@@ -1,5 +1,6 @@
 using GenGammaDist
-using Base.Test
+using Test
 
-# write your own tests here
-@test 1 == 1
+@testset "generalized gamma" begin
+    GenGamma() == GenGamma(1.0, 1.0, 1.0)
+end
